@@ -1,3 +1,12 @@
+buildscript {
+	repositories {
+		maven { url 'http://repo.spring.io/plugins-release' }
+	}
+	dependencies {
+		classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.6'
+	}
+}
+
 description = "The Gradle Infusion Plugin - Documentation made easy"
 
 group = "com.willydupreez.infusion"
@@ -5,12 +14,26 @@ version = "0.0.1-SNAPSHOT"
 
 apply plugin: "groovy"
 apply plugin: "eclipse"
+apply plugin: "propdeps"
+apply plugin: "propdeps-maven"
+apply plugin: "propdeps-eclipse"
+
+eclipse {
+	classpath {
+		downloadJavadoc = true
+		downloadSources=true
+	}
+}
 
 repositories {
 	mavenLocal()
 	mavenCentral()
+	maven {
+		url "http://repo.springsource.org/libs-release-remote/"
+	}
 }
 
+ext.gradleVersion		= "1.12"
 ext.undertowVersion 	= "1.1.0.Beta1"
 ext.pegdownVersion		= "1.4.2"
 
@@ -19,6 +42,9 @@ dependencies {
 	compile localGroovy()
 	compile("io.undertow:undertow-core:${undertowVersion}")
 	compile("org.pegdown:pegdown:${pegdownVersion}")
+
+	provided("org.gradle:gradle-core:${gradleVersion}")
+	provided("org.gradle:gradle-tooling-api:${gradleVersion}")
 }
 
 task wrapper(type: Wrapper) {
