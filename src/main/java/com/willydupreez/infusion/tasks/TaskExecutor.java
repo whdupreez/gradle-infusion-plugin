@@ -25,7 +25,7 @@ public class TaskExecutor {
 
 	public void execute(String ... tasks) {
 
-		validateTasks(asList(tasks));
+//		validateTasks(asList(tasks));
 
 		ProjectConnection connection = GradleConnector.newConnector()
 				.useInstallation(gradleHomeDir)

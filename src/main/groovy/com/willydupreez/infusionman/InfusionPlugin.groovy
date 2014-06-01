@@ -46,7 +46,7 @@ class InfusionPlugin implements Plugin<Project> {
 
 			doLast {
 				FilePatternWatcher watcher = new FilePatternWatcher(project.infusion.siteSrc, { path ->
-					new TaskExecutor(project.rootDir, project.getGradle().getGradleHomeDir()).run()
+					new TaskExecutor(project).execute("infusionSite")
 				})
 				watcher.start()
 //				InfusionSiteTaskTest task = new InfusionSiteTaskTest(project)
