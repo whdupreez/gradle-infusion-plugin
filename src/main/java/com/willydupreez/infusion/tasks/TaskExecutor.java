@@ -1,4 +1,4 @@
-package com.willydupreez.infusion;
+package com.willydupreez.infusion.tasks;
 
 import static java.util.Arrays.asList;
 
