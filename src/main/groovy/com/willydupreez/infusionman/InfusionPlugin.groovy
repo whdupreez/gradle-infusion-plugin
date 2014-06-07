@@ -45,7 +45,7 @@ class InfusionPlugin implements Plugin<Project> {
 			siteDist = project.infusion.siteDist
 
 			doLast {
-				FilePatternWatcher watcher = new FilePatternWatcher(project.infusion.siteSrc, { path ->
+				FilePatternWatcher watcher = new FilePatternWatcher(project.infusion.siteSrc, { paths ->
 					new TaskExecutor(project).execute("infusionSite")
 				})
 				watcher.start()
