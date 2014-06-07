@@ -49,12 +49,6 @@ class InfusionPlugin implements Plugin<Project> {
 					new TaskExecutor(project).execute("infusionSite")
 				})
 				watcher.start()
-//				InfusionSiteTaskTest task = new InfusionSiteTaskTest(project)
-//				task.siteSrc = project.infusion.siteSrc
-//				task.siteDist = project.infusion.siteDist
-//				task.siteTmp = project.infusion.siteTmp
-//				Watcher watcher = new Watcher(project.infusion.siteSrc, task)
-//				watcher.start();
 				log.lifecycle "Watcher started. Press any key to stop ..."
 				if (System.console() == null) {
 					new BufferedReader(new InputStreamReader(System.in)).readLine()
