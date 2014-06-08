@@ -36,6 +36,7 @@ class InfusionPlugin implements Plugin<Project> {
 			description = "Serves the site"
 			waitForKeypress = true
 			port = project.infusion.port
+			host = project.infusion.host
 			siteDist = project.infusion.siteDist
 		}
 
@@ -43,6 +44,7 @@ class InfusionPlugin implements Plugin<Project> {
 			description = "Serves the site"
 			waitForKeypress = false
 			port = project.infusion.port
+			host = "0.0.0.0"
 			siteDist = project.infusion.siteDist
 
 			doLast {

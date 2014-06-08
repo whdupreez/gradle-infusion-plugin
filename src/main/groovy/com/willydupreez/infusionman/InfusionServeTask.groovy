@@ -13,6 +13,7 @@ import com.willydupreez.infusion.util.Consoles;
 class InfusionServeTask extends DefaultTask {
 
 	boolean waitForKeypress = true
+	String host
 	int port
 
 	@InputDirectory
@@ -20,17 +21,17 @@ class InfusionServeTask extends DefaultTask {
 
 	@TaskAction
 	def serve() {
-		startServing(siteDist, port)
+		startServing(siteDist, port, host)
 	}
 
-	private void startServing(File site, int port) {
+	private void startServing(File site, int port, String host) {
 		logger.println "Starting to serve site: ${site}"
 
 		def siteHandler = resource(new FileResourceManager(site, 100))
 				.setDirectoryListingEnabled(true)
 
 		Undertow server = Undertow.builder()
-				.addHttpListener(port, "localhost")
+				.addHttpListener(port, host)
 				.setHandler(siteHandler)
 				.build()
 		server.start()

@@ -6,6 +6,7 @@ class InfusionPluginExtension {
 	File siteTmp
 	File siteDist
 
+	String host = "localhost"
 	int port = 9090
 
 	InfusionPluginExtension(File siteSrc, File siteTmp, File siteDist) {
