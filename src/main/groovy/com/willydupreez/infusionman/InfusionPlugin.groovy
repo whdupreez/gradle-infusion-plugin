@@ -8,6 +8,7 @@ import org.gradle.api.logging.Logging
 import org.gradle.api.tasks.Delete
 
 import com.willydupreez.infusion.tasks.TaskExecutor;
+import com.willydupreez.infusion.util.Consoles;
 import com.willydupreez.infusion.watch.FilePatternWatcher
 
 class InfusionPlugin implements Plugin<Project> {
@@ -50,11 +51,7 @@ class InfusionPlugin implements Plugin<Project> {
 				})
 				watcher.start()
 				log.lifecycle "Watcher started. Press any key to stop ..."
-				if (System.console() == null) {
-					new BufferedReader(new InputStreamReader(System.in)).readLine()
-				} else {
-					System.console().readLine()
-				}
+				Consoles.waitForKeyPress()
 				watcher.stop()
 			}
 		}

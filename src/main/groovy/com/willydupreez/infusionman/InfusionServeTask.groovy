@@ -8,6 +8,8 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.TaskAction
 
+import com.willydupreez.infusion.util.Consoles;
+
 class InfusionServeTask extends DefaultTask {
 
 	boolean waitForKeypress = true
@@ -39,15 +41,7 @@ class InfusionServeTask extends DefaultTask {
 		if (waitForKeypress) {
 			logger.println "Press any key to continue ..."
 			logger.println ""
-			waitForKeyPress()
-		}
-	}
-
-	private void waitForKeyPress() {
-		if (System.console() == null) {
-			new BufferedReader(new InputStreamReader(System.in)).readLine()
-		} else {
-			System.console().readLine()
+			Consoles.waitForKeyPress()
 		}
 	}
 
