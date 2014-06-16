@@ -1,5 +1,7 @@
 package com.willydupreez.infusionman
 
+import static com.willydupreez.infusion.util.FileUtils.*;
+
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
@@ -7,6 +9,7 @@ import org.gradle.api.tasks.TaskAction
 
 import com.willydupreez.infusion.processor.MarkdownProcessor
 import com.willydupreez.infusion.processor.TemplateProcessor
+import com.willydupreez.infusion.util.FileUtils
 
 class InfusionSiteTask extends DefaultTask {
 
@@ -71,14 +74,14 @@ class InfusionSiteTask extends DefaultTask {
 		project.fileTree(siteTmpMd2html) {
 			include "**/*.md"
 		}.each { File markdown ->
-			mdProcessor.process(markdown, md2htmlOut(markdown))
+			mdProcessor.process(markdown, createWithExtension(markdown, "md2html"))
 		}
 
 		// Apply templates to the HTML partials.
 		project.fileTree(siteTmpMd2html) {
 			include "**/*.md2html"
 		}.each { File md2html ->
-			tProcessor.process(template, md2html, htmlOut(md2html))
+			tProcessor.process(template, md2html, createWithExtension(md2html, "html"))
 		}
 
 	}
@@ -112,20 +115,6 @@ class InfusionSiteTask extends DefaultTask {
 			include '**/*.html'
 		}
 
-	}
-
-	File md2htmlOut(File markdown) {
-		return new File(markdown.parentFile, setExtension(markdown.name,  "md2html"))
-	}
-
-	File htmlOut(File md2html) {
-		return new File(md2html.parentFile, setExtension(md2html.name,  "html"))
-	}
-
-	private String setExtension(String filename, String extension) {
-		int idx = filename.lastIndexOf('.')
-		String stripped = idx > 0 ? filename.substring(0, idx) : filename
-		return stripped + "." + extension
 	}
 
 }

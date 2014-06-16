@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.willydupreez.infusion.util.Strings;
+import com.willydupreez.infusion.util.FileUtils;
 
 public class TemplateProcessor {
 
@@ -18,7 +18,7 @@ public class TemplateProcessor {
 	public void process(File templateFile, File content, File out) {
 		try {
 			Map<String, String> context = new HashMap<>();
-			context.put("content", Strings.readAsString(content));
+			context.put("content", FileUtils.readAsString(content));
 			Template template = engine.createTemplate(templateFile);
 			template.make(context).writeTo(new FileWriter(out));
 		} catch (IOException | ClassNotFoundException e) {
