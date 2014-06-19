@@ -1,31 +1,38 @@
 package com.willydupreez.infusion.tasks;
 
-import static java.util.Arrays.asList;
-
 import java.io.File;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.gradle.api.Project;
-import org.gradle.api.Task;
 import org.gradle.tooling.GradleConnector;
 import org.gradle.tooling.ProjectConnection;
 
+/**
+ * Executes Gradle build tasks.
+ *
+ * @author Willy du Preez
+ *
+ */
 public class TaskExecutor {
 
-	private Project project;
 	private File projectDir;
 	private File gradleHomeDir;
 
+	/**
+	 * Create a task executor for the project.
+	 *
+	 * @param project the project
+	 */
 	public TaskExecutor(Project project) {
-		this.project = project;
 		this.projectDir = project.getProjectDir();
 		this.gradleHomeDir = project.getGradle().getGradleHomeDir();
 	}
 
+	/**
+	 * Executes the specified Gradle tasks.
+	 *
+	 * @param tasks the tasks to execute
+	 */
 	public void execute(String ... tasks) {
-
-//		validateTasks(asList(tasks));
 
 		ProjectConnection connection = GradleConnector.newConnector()
 				.useInstallation(gradleHomeDir)
@@ -33,19 +40,10 @@ public class TaskExecutor {
 				.connect();
 
 		connection.newBuild()
-				.forTasks("infusionSite")
+				.forTasks(tasks)
 				.run();
-	}
 
-	private void validateTasks(List<String> tasks) {
-		List<String> taskNames = project.getTasks().stream()
-				.map(Task::getName)
-				.collect(Collectors.toList());
-		for (String task : tasks) {
-			if (taskNames.contains(task)) {
-				throw new RuntimeException("No such task");
-			}
-		}
+		connection.close();
 	}
 
 }
