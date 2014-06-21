@@ -44,7 +44,7 @@ infusion {
 			exclude = ''
 			template = 'article.tpl.html'
 		}
-		blockdex {
+		blocks {
 			include = 'index.md'
 			exclude = ''
 			template = 'index.tpl.html'

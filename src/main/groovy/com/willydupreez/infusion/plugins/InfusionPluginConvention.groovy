@@ -1,13 +1,13 @@
 package com.willydupreez.infusion.plugins
 
-import org.gradle.api.internal.project.ProjectInternal
+import org.gradle.api.Project
 import org.gradle.internal.reflect.Instantiator
 
 class InfusionPluginConvention {
 
-	ProjectInternal project
+	Project project
 
-	InfusionPluginConvention(ProjectInternal project, Instantiator instantiator) {
+	InfusionPluginConvention(Project project, Instantiator instantiator) {
 		this.project = project
 
 		// Init defaults.
