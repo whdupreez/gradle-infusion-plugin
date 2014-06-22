@@ -14,7 +14,7 @@ public class InfusionPlugin implements Plugin<Project> {
 	public void apply(Project project) {
 		project.getPlugins().apply(InfusionBasePlugin.class);
 
-		InfusionPluginConvention infusionConvention = project.getConvention().getPlugin(InfusionPluginConvention.class);
+		InfusionPluginExtension infusionExtension = project.getExtensions().getByType(InfusionPluginExtension.class);
 
 	}
 
