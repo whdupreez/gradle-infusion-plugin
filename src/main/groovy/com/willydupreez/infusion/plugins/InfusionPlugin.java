@@ -16,6 +16,21 @@ public class InfusionPlugin implements Plugin<Project> {
 
 		InfusionPluginExtension infusionExtension = project.getExtensions().getByType(InfusionPluginExtension.class);
 
+		configureProcessors(infusionExtension);
+		configureSite(infusionExtension);
+		configureTemplates(infusionExtension);
+	}
+
+	private void configureProcessors(InfusionPluginExtension infusionExtension) {
+
+	}
+
+	private void configureSite(InfusionPluginExtension infusionExtension) {
+
+	}
+
+	private void configureTemplates(InfusionPluginExtension infusionExtension) {
+
 	}
 
 }
