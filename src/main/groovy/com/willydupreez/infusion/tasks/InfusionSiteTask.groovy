@@ -1,6 +1,10 @@
-package com.willydupreez.infusionman
+package com.willydupreez.infusion.tasks
 
-import static com.willydupreez.infusion.util.FileUtils.*;
+import static com.willydupreez.infusion.util.FileUtils.*
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.InputDirectory
@@ -8,8 +12,8 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
 import com.willydupreez.infusion.processor.MarkdownProcessor
-import com.willydupreez.infusion.processor.TemplateProcessor
-import com.willydupreez.infusion.util.FileUtils
+import com.willydupreez.infusion.template.TemplateProcessor
+import com.willydupreez.infusion.util.FileUtils;
 
 class InfusionSiteTask extends DefaultTask {
 
@@ -73,8 +77,11 @@ class InfusionSiteTask extends DefaultTask {
 		// Convert Markdown into HTML partials.
 		project.fileTree(siteTmpMd2html) {
 			include "**/*.md"
-		}.each { File markdown ->
-			mdProcessor.process(markdown, createWithExtension(markdown, "md2html"))
+		}.each { File markdownFile ->
+			String markdown = FileUtils.readAsString(markdownFile)
+			String html = mdProcessor.process(markdown)
+			File md2htmlFile = createWithExtension(markdown, "md2html")
+			FileUtils.writeToFile(html, md2htmlFile);
 		}
 
 		// Apply templates to the HTML partials.

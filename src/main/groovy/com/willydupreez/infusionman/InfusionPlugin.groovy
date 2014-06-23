@@ -7,9 +7,10 @@ import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 import org.gradle.api.tasks.Delete
 
-import com.willydupreez.infusion.tasks.TaskExecutor;
+import com.willydupreez.infusion.tasks.InfusionSiteTask;
 import com.willydupreez.infusion.util.Consoles;
 import com.willydupreez.infusion.watch.FilePatternWatcher
+import com.willydupreez.infusion.watch.TaskExecutor;
 
 class InfusionPlugin implements Plugin<Project> {
 

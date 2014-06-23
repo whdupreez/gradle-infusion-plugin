@@ -1,4 +1,4 @@
-package com.willydupreez.infusion.processor;
+package com.willydupreez.infusion.template;
 
 import groovy.text.SimpleTemplateEngine;
 import groovy.text.Template;
@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.willydupreez.infusion.processor.MarkupProcessorException;
 import com.willydupreez.infusion.util.FileUtils;
 
 public class TemplateProcessor {
@@ -22,7 +23,7 @@ public class TemplateProcessor {
 			Template template = engine.createTemplate(templateFile);
 			template.make(context).writeTo(new FileWriter(out));
 		} catch (IOException | ClassNotFoundException e) {
-			throw new ProcessorException("Failed to process template: " + templateFile, e);
+			throw new MarkupProcessorException("Failed to process template: " + templateFile, e);
 		}
 	}
 
