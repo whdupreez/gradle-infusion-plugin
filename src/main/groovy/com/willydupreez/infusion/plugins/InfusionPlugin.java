@@ -19,6 +19,7 @@ public class InfusionPlugin implements Plugin<Project> {
 		configureProcessors(infusionExtension);
 		configureSite(infusionExtension);
 		configureTemplates(infusionExtension);
+		configureWatch(infusionExtension);
 	}
 
 	private void configureProcessors(InfusionPluginExtension infusionExtension) {
@@ -30,6 +31,18 @@ public class InfusionPlugin implements Plugin<Project> {
 	}
 
 	private void configureTemplates(InfusionPluginExtension infusionExtension) {
+
+	}
+
+	private void configureWatch(InfusionPluginExtension infusionExtension) {
+
+	}
+
+	private void configureClean(Project project) {
+//		project.getTasks().
+	}
+
+	private void configureServe(Project project) {
 
 	}
 
