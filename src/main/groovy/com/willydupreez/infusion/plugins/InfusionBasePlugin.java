@@ -12,4 +12,12 @@ public class InfusionBasePlugin implements Plugin<Project> {
 		project.getExtensions().create(INFUSION_PLUGIN_EXTENSION, InfusionPluginExtension.class, project);
 	}
 
+	private void configureClean(Project project) {
+//		project.getTasks().
+	}
+
+	private void configureServe(Project project) {
+
+	}
+
 }

@@ -38,12 +38,4 @@ public class InfusionPlugin implements Plugin<Project> {
 
 	}
 
-	private void configureClean(Project project) {
-//		project.getTasks().
-	}
-
-	private void configureServe(Project project) {
-
-	}
-
 }
