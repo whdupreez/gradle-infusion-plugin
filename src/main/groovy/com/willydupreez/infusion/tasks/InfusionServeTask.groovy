@@ -1,4 +1,4 @@
-package com.willydupreez.infusionman
+package com.willydupreez.infusion.tasks
 
 import static io.undertow.Handlers.resource;
 import io.undertow.Undertow

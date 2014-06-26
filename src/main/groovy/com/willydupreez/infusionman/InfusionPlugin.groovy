@@ -7,6 +7,7 @@ import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 import org.gradle.api.tasks.Delete
 
+import com.willydupreez.infusion.tasks.InfusionServeTask;
 import com.willydupreez.infusion.tasks.InfusionSiteTask;
 import com.willydupreez.infusion.util.Consoles;
 import com.willydupreez.infusion.watch.FilePatternWatcher
@@ -21,17 +22,17 @@ class InfusionPlugin implements Plugin<Project> {
 
 		createInfusionPluginExtension(project)
 
-		project.task("cleanInfusion", group: "infusion",  type: Delete) {
-			description = "Cleans the site build directories"
-			delete project.infusion.siteTmp, project.infusion.siteDist
-		}
+//		project.task("cleanInfusion", group: "infusion",  type: Delete) {
+//			description = "Cleans the site build directories"
+//			delete project.infusion.siteTmp, project.infusion.siteDist
+//		}
 
-		project.task("infusionSite", group: "infusion",  type: InfusionSiteTask) {
-			description = "Builds the site"
-			siteSrc = project.infusion.siteSrc
-			siteDist = project.infusion.siteDist
-			siteTmp = project.infusion.siteTmp
-		}
+//		project.task("infusionSite", group: "infusion",  type: InfusionSiteTask) {
+//			description = "Builds the site"
+//			siteSrc = project.infusion.siteSrc
+//			siteDist = project.infusion.siteDist
+//			siteTmp = project.infusion.siteTmp
+//		}
 
 		project.task("infusionServe", group: "infusion",  type: InfusionServeTask, dependsOn: "infusionSite") {
 			description = "Serves the site"
