@@ -34,31 +34,31 @@ class InfusionPlugin implements Plugin<Project> {
 //			siteTmp = project.infusion.siteTmp
 //		}
 
-		project.task("infusionServe", group: "infusion",  type: InfusionServeTask, dependsOn: "infusionSite") {
-			description = "Serves the site"
-			waitForKeypress = true
-			port = project.infusion.port
-			host = project.infusion.host
-			siteDist = project.infusion.siteDist
-		}
+//		project.task("infusionServe", group: "infusion",  type: InfusionServeTask, dependsOn: "infusionSite") {
+//			description = "Serves the site"
+//			waitForKeypress = true
+//			port = project.infusion.port
+//			host = project.infusion.host
+//			siteDist = project.infusion.siteDist
+//		}
 
-		project.task("infusionWatch", group: "infusion",  type: InfusionServeTask, dependsOn: "infusionSite") {
-			description = "Serves the site"
-			waitForKeypress = false
-			port = project.infusion.port
-			host = "0.0.0.0"
-			siteDist = project.infusion.siteDist
-
-			doLast {
-				FilePatternWatcher watcher = new FilePatternWatcher(project.infusion.siteSrc, { paths ->
-					new TaskExecutor(project).execute("infusionSite")
-				})
-				watcher.start()
-				log.lifecycle "Watcher started. Press any key to stop ..."
-				Consoles.waitForKeyPress()
-				watcher.stop()
-			}
-		}
+//		project.task("infusionWatch", group: "infusion",  type: InfusionServeTask, dependsOn: "infusionSite") {
+//			description = "Serves the site"
+//			waitForKeypress = false
+//			port = project.infusion.port
+//			host = "0.0.0.0"
+//			siteDist = project.infusion.siteDist
+//
+//			doLast {
+//				FilePatternWatcher watcher = new FilePatternWatcher(project.infusion.siteSrc, { paths ->
+//					new TaskExecutor(project).execute("infusionSite")
+//				})
+//				watcher.start()
+//				log.lifecycle "Watcher started. Press any key to stop ..."
+//				Consoles.waitForKeyPress()
+//				watcher.stop()
+//			}
+//		}
 
 	}
 
