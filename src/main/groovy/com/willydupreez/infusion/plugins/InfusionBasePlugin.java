@@ -7,14 +7,19 @@ import java.io.File;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.logging.Logger;
+import org.gradle.api.logging.Logging;
 import org.gradle.api.tasks.Delete;
 
 import com.willydupreez.infusion.tasks.InfusionServeTask;
 import com.willydupreez.infusion.tasks.InfusionSiteTask;
 import com.willydupreez.infusion.util.Consoles;
 import com.willydupreez.infusion.watch.FilePatternWatcher;
+import com.willydupreez.infusion.watch.TaskExecutor;
 
 public class InfusionBasePlugin implements Plugin<Project> {
+
+	private final Logger log = Logging.getLogger(InfusionPlugin.class);
 
 	public static final String INFUSION_GROUP = "infusion";
 
@@ -69,6 +74,7 @@ public class InfusionBasePlugin implements Plugin<Project> {
 		serveTask.setDependsOn(asList(SITE_TASK_NAME));
 	}
 
+	@SuppressWarnings("serial")
 	private void configureWatch(Project project) {
 		InfusionServeTask serveTask = project.getTasks().create(SERVE_TASK_NAME, InfusionServeTask.class);
 		serveTask.setDescription(WATCH_TASK_DESCRIPTION);
@@ -77,15 +83,27 @@ public class InfusionBasePlugin implements Plugin<Project> {
 		serveTask.setHost("0.0.0.0");
 		serveTask.setPort(9000);
 		serveTask.setSiteDist(new File(project.getBuildDir(), "site"));
-//		serveTask.doLast(new Closure(serveTask) {
-//			FilePatternWatcher watcher = new FilePatternWatcher(project.infusion.siteSrc, { paths ->
-//			new TaskExecutor(project).execute("infusionSite")
-//		})
-//		watcher.start()
-//		log.lifecycle "Watcher started. Press any key to stop ..."
-//		Consoles.waitForKeyPress()
-//		watcher.stop()
-//		});
+		serveTask.doLast(new Closure<Void>(serveTask) {
+
+			@Override
+			public Void call(Object ... args) {
+				FilePatternWatcher watcher = new FilePatternWatcher(new File(project.getBuildDir(), "site"), new Closure<Void>(serveTask) {
+
+					@Override
+					public Void call(Object arguments) {
+						new TaskExecutor(project).execute("infusionSite");
+						return super.call(arguments);
+					}
+
+				});
+				watcher.start();
+				log.lifecycle("Watcher started. Press any key to stop ...");
+				Consoles.waitForKeyPress();
+				watcher.stop();
+				return super.call();
+			}
+
+		});
 	}
 
 }
