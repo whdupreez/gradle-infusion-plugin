@@ -80,7 +80,7 @@ class InfusionSiteTask extends DefaultTask {
 		}.each { File markdownFile ->
 			String markdown = FileUtils.readAsString(markdownFile)
 			String html = mdProcessor.process(markdown)
-			File md2htmlFile = createWithExtension(markdown, "md2html")
+			File md2htmlFile = createWithExtension(markdownFile, "md2html")
 			FileUtils.writeToFile(html, md2htmlFile);
 		}
 

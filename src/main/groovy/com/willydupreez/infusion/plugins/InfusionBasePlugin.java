@@ -58,6 +58,7 @@ public class InfusionBasePlugin implements Plugin<Project> {
 	private void configureSite(Project project, InfusionPluginExtension infusionExtension) {
 		InfusionSiteTask siteTask = project.getTasks().create(SITE_TASK_NAME, InfusionSiteTask.class);
 		siteTask.setDescription(SITE_TASK_DESCRIPTION);
+		siteTask.setGroup(INFUSION_GROUP);
 		siteTask.setSiteSrc(new File(project.getProjectDir(), "src/site"));
 		siteTask.setSiteDist(new File(project.getBuildDir(), "site"));
 		siteTask.setSiteTmp(new File(project.getBuildDir(), "site-tmp"));
@@ -76,7 +77,7 @@ public class InfusionBasePlugin implements Plugin<Project> {
 
 	@SuppressWarnings("serial")
 	private void configureWatch(Project project) {
-		InfusionServeTask serveTask = project.getTasks().create(SERVE_TASK_NAME, InfusionServeTask.class);
+		InfusionServeTask serveTask = project.getTasks().create(WATCH_TASK_NAME, InfusionServeTask.class);
 		serveTask.setDescription(WATCH_TASK_DESCRIPTION);
 		serveTask.setGroup(INFUSION_GROUP);
 		serveTask.setWaitForKeypress(false);
@@ -87,11 +88,11 @@ public class InfusionBasePlugin implements Plugin<Project> {
 
 			@Override
 			public Void call(Object ... args) {
-				FilePatternWatcher watcher = new FilePatternWatcher(new File(project.getBuildDir(), "site"), new Closure<Void>(serveTask) {
+				FilePatternWatcher watcher = new FilePatternWatcher(new File(project.getProjectDir(), "src/site"), new Closure<Void>(serveTask) {
 
 					@Override
 					public Void call(Object arguments) {
-						new TaskExecutor(project).execute("infusionSite");
+						new TaskExecutor(project).execute(SITE_TASK_NAME);
 						return super.call(arguments);
 					}
 
