@@ -21,10 +21,21 @@ public class MarkdownProcessor implements MarkupProcessor {
 	@Override
 	public String process(String markdown) {
 		try {
-			return processor.markdownToHtml(markdown);
+			String html = processor.markdownToHtml(markdown);
+			String toc = generateTableOfContents();
+			return replaceTocTag(html, toc);
 		} catch (Exception e) {
 			throw new MarkupProcessorException("Failed to process markdown.", e);
 		}
+	}
+
+	private String generateTableOfContents() {
+		return "<h1>Table of Contents</h1>";
+//		return new ToHtmlSerializer(linkRenderer, verbatimSerializerMap).toHtml(astRoot);
+	}
+
+	private String replaceTocTag(String html, String toc) {
+		return html.replaceAll("[TABLE OF CONTENTS]", toc);
 	}
 
 }
