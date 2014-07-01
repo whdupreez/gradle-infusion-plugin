@@ -11,7 +11,7 @@ import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
-import com.willydupreez.infusion.processor.MarkdownProcessor
+import com.willydupreez.infusion.processor.markdown.MarkdownProcessor;
 import com.willydupreez.infusion.template.TemplateProcessor
 import com.willydupreez.infusion.util.FileUtils;
 
