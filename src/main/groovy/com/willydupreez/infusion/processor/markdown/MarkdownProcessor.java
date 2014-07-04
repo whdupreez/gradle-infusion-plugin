@@ -23,6 +23,7 @@ import com.willydupreez.infusion.processor.MarkupProcessorException;
  */
 public class MarkdownProcessor implements MarkupProcessor {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = Logging.getLogger(MarkdownProcessor.class);
 
 	private PegDownProcessor processor;
@@ -40,23 +41,10 @@ public class MarkdownProcessor implements MarkupProcessor {
             		new LinkRenderer(),
             		Collections.<String, VerbatimSerializer>emptyMap(),
             		Collections.<ToHtmlSerializerPlugin>emptyList());
-			String html = serializer.toHtml(astRoot);
-			String toc = serializer.getTableOfContents();
-			log.lifecycle(toc);
-			return html;
-//			return replaceTocTag(html, toc);
+			return serializer.toHtml(astRoot);
 		} catch (Exception e) {
 			throw new MarkupProcessorException("Failed to process markdown.", e);
 		}
 	}
-
-//	private String generateTableOfContents() {
-//		return "<h1>Table of Contents</h1>";
-////		return new ToHtmlSerializer(linkRenderer, verbatimSerializerMap).toHtml(astRoot);
-//	}
-//
-//	private String replaceTocTag(String html, String toc) {
-//		return html.replaceAll("[TABLE OF CONTENTS]", toc);
-//	}
 
 }
