@@ -22,8 +22,6 @@ public class ExtendedMarkdownSerializer extends ToHtmlSerializer {
 	@SuppressWarnings("unused")
 	private static final Logger log = Logging.getLogger(ExtendedMarkdownSerializer.class);
 
-	private static final String SPACES = "                    ";
-
 	private boolean processingHeader;
 	private List<TocEntry> tableOfContents;
 	private TocEntry currentEntry;

@@ -30,9 +30,10 @@ eclipse {
 repositories {
 	mavenLocal()
 	mavenCentral()
-	maven {
-		url "http://repo.springsource.org/libs-release-remote/"
-	}
+	maven { url "http://repo.gradle.org/gradle/libs-releases-local" }
+//	maven { url "http://repo.springsource.org/libs-release-remote/" }
+//	maven { url "http://repo.springsource.org/libs-milestone" }
+//	maven { url "http://repo.springsource.org/libs-snapshot" }
 }
 
 ext.gradleVersion		= "2.0"
