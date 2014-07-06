@@ -35,7 +35,7 @@ repositories {
 	}
 }
 
-ext.gradleVersion		= "1.12"
+ext.gradleVersion		= "2.0"
 ext.undertowVersion 	= "1.1.0.Beta1"
 ext.pegdownVersion		= "1.4.2"
 
@@ -50,5 +50,5 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = "1.12"
+	gradleVersion = "2.0"
 }
