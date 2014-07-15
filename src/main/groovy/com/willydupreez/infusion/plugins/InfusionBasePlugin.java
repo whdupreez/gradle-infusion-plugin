@@ -86,11 +86,10 @@ public class InfusionBasePlugin implements Plugin<Project> {
 		serveTask.setSiteDist(new File(project.getBuildDir(), "site"));
 		serveTask.doLast(new Closure<Void>(serveTask) {
 
-			@Override
-			public Void call(Object ... args) {
+			@SuppressWarnings("unused")
+			public void doCall(Object args) {
 				FilePatternWatcher watcher = new FilePatternWatcher(new File(project.getProjectDir(), "src/site"), new Closure<Void>(this) {
 
-					@SuppressWarnings("unused")
 					public void doCall(Object arguments) {
 						new TaskExecutor(project).execute(SITE_TASK_NAME);
 					}
@@ -100,7 +99,6 @@ public class InfusionBasePlugin implements Plugin<Project> {
 				log.lifecycle("Watcher started. Press any key to stop ...");
 				Consoles.waitForKeyPress();
 				watcher.stop();
-				return super.call();
 			}
 
 		});
