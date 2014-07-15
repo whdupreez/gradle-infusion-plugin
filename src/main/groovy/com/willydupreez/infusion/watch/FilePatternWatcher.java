@@ -236,8 +236,9 @@ public class FilePatternWatcher {
 
 				if (eventQueue.peek() == null) {
 					try {
-						closure.call(changedPaths);
+						closure.call((Object) changedPaths);
 					} catch (Exception e) {
+						e.printStackTrace();
 						stop();
 						if (!(e instanceof InterruptedException)) {
 							throw e;

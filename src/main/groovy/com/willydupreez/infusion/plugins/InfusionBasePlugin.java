@@ -88,14 +88,13 @@ public class InfusionBasePlugin implements Plugin<Project> {
 
 			@Override
 			public Void call(Object ... args) {
-				FilePatternWatcher watcher = new FilePatternWatcher(new File(project.getProjectDir(), "src/site"), new Closure<Void>(serveTask) {
+				FilePatternWatcher watcher = new FilePatternWatcher(new File(project.getProjectDir(), "src/site"), new Closure<Void>(this) {
 
-					@Override
-					public Void call(Object arguments) {
+					@SuppressWarnings("unused")
+					public void doCall(Object arguments) {
 						new TaskExecutor(project).execute(SITE_TASK_NAME);
-						return super.call(arguments);
 					}
-
+					
 				});
 				watcher.start();
 				log.lifecycle("Watcher started. Press any key to stop ...");
