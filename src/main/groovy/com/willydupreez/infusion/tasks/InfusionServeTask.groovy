@@ -1,14 +1,16 @@
 package com.willydupreez.infusion.tasks
 
-import static io.undertow.Handlers.resource;
+import static io.undertow.Handlers.resource
 import io.undertow.Undertow
 import io.undertow.server.handlers.resource.FileResourceManager
 
 import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.InputDirectory;
+import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.TaskAction
 
-import com.willydupreez.infusion.util.Consoles;
+import com.willydupreez.infusion.server.ServerContext
+import com.willydupreez.infusion.server.UndertowServer
+import com.willydupreez.infusion.util.Consoles
 
 class InfusionServeTask extends DefaultTask {
 
@@ -25,21 +27,18 @@ class InfusionServeTask extends DefaultTask {
 	}
 
 	private void startServing(File site, int port, String host) {
-		logger.println "Starting to serve site: ${site}"
 
-		def siteHandler = resource(new FileResourceManager(site, 100))
-				.setDirectoryListingEnabled(true)
+		def context = new ServerContext()
+		context.port = port
+		context.host = host
+		context.site = site
 
-		Undertow server = Undertow.builder()
-				.addHttpListener(port, host)
-				.setHandler(siteHandler)
-				.build()
+		def server = new UndertowServer()
+		server.init(context)
 		server.start()
 
-		logger.println "Server started: http://localhost:/${port}"
-		logger.println ""
-
 		if (waitForKeypress) {
+			logger.println ""
 			logger.println "Press any key to continue ..."
 			logger.println ""
 			Consoles.waitForKeyPress()
