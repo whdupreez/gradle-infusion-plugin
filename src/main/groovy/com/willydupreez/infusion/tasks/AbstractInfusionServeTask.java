@@ -8,19 +8,18 @@ import org.gradle.api.tasks.TaskAction;
 
 import com.willydupreez.infusion.server.ServerContext;
 import com.willydupreez.infusion.server.UndertowServer;
+import com.willydupreez.infusion.util.Consoles;
 
 public abstract class AbstractInfusionServeTask extends DefaultTask {
 
 	private String host;
 	private int port;
 
-	private boolean waitforKeyPress;
-
 	@InputDirectory
 	private File siteDist;
 
 	@TaskAction
-	public void serve() {
+	public final void serve() {
 
 		onInit();
 
@@ -33,15 +32,18 @@ public abstract class AbstractInfusionServeTask extends DefaultTask {
 		server.init(context);
 
 		onStart();
-
 		server.start();
 
+		getLogger().lifecycle("Press any key to continue ...");
+		Consoles.waitForKeyPress();
+
 		onStop();
+		server.stop();
 	}
 
-	abstract void onInit();
-	abstract void onStart();
-	abstract void onStop();
+	protected abstract void onInit();
+	protected abstract void onStart();
+	protected abstract void onStop();
 
 	public String getHost() {
 		return host;
@@ -65,14 +67,6 @@ public abstract class AbstractInfusionServeTask extends DefaultTask {
 
 	public void setSiteDist(File siteDist) {
 		this.siteDist = siteDist;
-	}
-
-	public boolean isWaitforKeyPress() {
-		return waitforKeyPress;
-	}
-
-	public void setWaitforKeyPress(boolean waitforKeyPress) {
-		this.waitforKeyPress = waitforKeyPress;
 	}
 
 }

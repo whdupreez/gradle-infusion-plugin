@@ -12,8 +12,4 @@ class InfusionPluginExtension {
 		// Init defaults.
 	}
 
-	void watch(Closure closure) {
-
-	}
-
 }

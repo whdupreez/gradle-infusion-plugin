@@ -1,37 +1,14 @@
 package com.willydupreez.infusion.plugins;
 
-import static java.util.Arrays.asList;
-import groovy.lang.Closure;
-
-import java.io.File;
-
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
-import org.gradle.api.tasks.Delete;
-
-import com.willydupreez.infusion.tasks.InfusionServeTask;
-import com.willydupreez.infusion.tasks.InfusionSiteTask;
-import com.willydupreez.infusion.util.Consoles;
-import com.willydupreez.infusion.watch.FilePatternWatcher;
-import com.willydupreez.infusion.watch.TaskExecutor;
 
 public class InfusionBasePlugin implements Plugin<Project> {
 
-	private final Logger log = Logging.getLogger(InfusionPlugin.class);
-
-	public static final String INFUSION_GROUP = "infusion";
-
-	public static final String CLEAN_TASK_NAME = "infusionClean";
-	public static final String SITE_TASK_NAME = "infusionSite";
-	public static final String SERVE_TASK_NAME = "infusionServe";
-	public static final String WATCH_TASK_NAME = "infusionWatch";
-
-	private static final String CLEAN_TASK_DESCRIPTION = "Cleans the infusion site build directories";
-	private static final String SITE_TASK_DESCRIPTION = "Generates the infusion site";
-	private static final String SERVE_TASK_DESCRIPTION = "Serves the generated site using an embedded web server";
-	private static final String WATCH_TASK_DESCRIPTION = "Watches the site directory for changes and reloads the web server";
+	@SuppressWarnings("unused")
+	private final Logger log = Logging.getLogger(InfusionBasePlugin.class);
 
 	private static final String INFUSION_PLUGIN_EXTENSION = "infusion";
 
@@ -40,68 +17,16 @@ public class InfusionBasePlugin implements Plugin<Project> {
 		InfusionPluginExtension infusionExtension = project.getExtensions()
 				.create(INFUSION_PLUGIN_EXTENSION, InfusionPluginExtension.class, project);
 
-		configureClean(project, infusionExtension);
-		configureSite(project, infusionExtension);
-		configureServe(project);
-		configureWatch(project);
+		configureProcessors(infusionExtension);
+		configureTemplates(infusionExtension);
 	}
 
-	private void configureClean(Project project, InfusionPluginExtension infusionExtension) {
-		Delete cleanTask = project.getTasks().create(CLEAN_TASK_NAME, Delete.class);
-		cleanTask.setDescription(CLEAN_TASK_DESCRIPTION);
-		cleanTask.setGroup(INFUSION_GROUP);
-		cleanTask.delete(
-				new File(project.getBuildDir(), "site"),
-				new File(project.getBuildDir(), "site-tmp"));
+	private void configureProcessors(InfusionPluginExtension infusionExtension) {
+
 	}
 
-	private void configureSite(Project project, InfusionPluginExtension infusionExtension) {
-		InfusionSiteTask siteTask = project.getTasks().create(SITE_TASK_NAME, InfusionSiteTask.class);
-		siteTask.setDescription(SITE_TASK_DESCRIPTION);
-		siteTask.setGroup(INFUSION_GROUP);
-		siteTask.setSiteSrc(new File(project.getProjectDir(), "src/site"));
-		siteTask.setSiteDist(new File(project.getBuildDir(), "site"));
-		siteTask.setSiteTmp(new File(project.getBuildDir(), "site-tmp"));
-	}
+	private void configureTemplates(InfusionPluginExtension infusionExtension) {
 
-	private void configureServe(Project project) {
-		InfusionServeTask serveTask = project.getTasks().create(SERVE_TASK_NAME, InfusionServeTask.class);
-		serveTask.setDescription(SERVE_TASK_DESCRIPTION);
-		serveTask.setGroup(INFUSION_GROUP);
-		serveTask.setWaitForKeypress(true);
-		serveTask.setHost("localhost");
-		serveTask.setPort(9001);
-		serveTask.setSiteDist(new File(project.getBuildDir(), "site"));
-		serveTask.setDependsOn(asList(SITE_TASK_NAME));
-	}
-
-	@SuppressWarnings("serial")
-	private void configureWatch(Project project) {
-		InfusionServeTask serveTask = project.getTasks().create(WATCH_TASK_NAME, InfusionServeTask.class);
-		serveTask.setDescription(WATCH_TASK_DESCRIPTION);
-		serveTask.setGroup(INFUSION_GROUP);
-		serveTask.setWaitForKeypress(false);
-		serveTask.setHost("0.0.0.0");
-		serveTask.setPort(9000);
-		serveTask.setSiteDist(new File(project.getBuildDir(), "site"));
-		serveTask.doLast(new Closure<Void>(serveTask) {
-
-			@SuppressWarnings("unused")
-			public void doCall(Object args) {
-				FilePatternWatcher watcher = new FilePatternWatcher(new File(project.getProjectDir(), "src/site"), new Closure<Void>(this) {
-
-					public void doCall(Object arguments) {
-						new TaskExecutor(project).execute(SITE_TASK_NAME);
-					}
-					
-				});
-				watcher.start();
-				log.lifecycle("Watcher started. Press any key to stop ...");
-				Consoles.waitForKeyPress();
-				watcher.stop();
-			}
-
-		});
 	}
 
 }
