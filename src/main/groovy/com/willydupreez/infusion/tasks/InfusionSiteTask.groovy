@@ -2,18 +2,16 @@ package com.willydupreez.infusion.tasks
 
 import static com.willydupreez.infusion.util.FileUtils.*
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-
+import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
-import com.willydupreez.infusion.processor.markdown.MarkdownProcessor;
+import com.willydupreez.infusion.processor.markdown.MarkdownProcessor
+import com.willydupreez.infusion.properties.PropertiesLoader
 import com.willydupreez.infusion.template.TemplateProcessor
-import com.willydupreez.infusion.util.FileUtils;
+import com.willydupreez.infusion.util.FileUtils
 
 class InfusionSiteTask extends DefaultTask {
 
@@ -30,8 +28,10 @@ class InfusionSiteTask extends DefaultTask {
 	private File siteSrcMarkdown
 	private File siteSrcResources
 	private File siteSrcTemplates
+	private File siteSrcProperties
 
 	private File siteTmpMd2html
+	private File siteTmpProperties
 
 	@TaskAction
 	def site() {
@@ -40,16 +40,20 @@ class InfusionSiteTask extends DefaultTask {
 		siteSrcMarkdown 	= new File(siteSrc, "markdown")
 		siteSrcResources 	= new File(siteSrc, "resources")
 		siteSrcTemplates 	= new File(siteSrc, "templates")
+		siteSrcProperties	= new File(siteSrc, "properties")
 
 		siteTmpMd2html		= new File(siteTmp, "md2html")
+		siteTmpProperties	= new File(siteTmp, "properties")
 
 		siteTmp.mkdirs()
 		siteTmpMd2html.mkdirs()
+		siteTmpProperties.mkdirs()
 
 		siteDist.mkdirs()
 
 		prepareSiteTmp()
 		processMarkdown()
+		processProperties()
 		copySite()
 
 	}
@@ -93,17 +97,43 @@ class InfusionSiteTask extends DefaultTask {
 
 	}
 
-	def copySite() {
+	def processProperties() {
 
 		// Access to closure.
 		def srcHtml = siteSrcHtml
-		def srcResources = siteSrcResources
 		def tmpMd2html = siteTmpMd2html
-		def dist = siteDist
+		def dest = siteTmpProperties
+
+		def props = new PropertiesLoader().load(siteSrcProperties, ".properties", ".content");
 
 		// Copy HTML.
 		project.copy {
 			from srcHtml
+			into dest
+			include '**/*.html'
+			filter ReplaceTokens, tokens: props
+		}
+
+		// Copy processed markdown.
+		project.copy {
+			from tmpMd2html
+			into dest
+			include '**/*.html'
+			filter ReplaceTokens, tokens: props
+		}
+
+	}
+
+	def copySite() {
+
+		// Access to closure.
+		def srcResources = siteSrcResources
+		def tmpProperties = siteTmpProperties
+		def dist = siteDist
+
+		// Copy HTML processed properties.
+		project.copy {
+			from tmpProperties
 			into dist
 			include '**/*.html'
 		}
@@ -113,13 +143,6 @@ class InfusionSiteTask extends DefaultTask {
 			from srcResources
 			into dist
 			include '**/*'
-		}
-
-		// Copy processed markdown.
-		project.copy {
-			from tmpMd2html
-			into dist
-			include '**/*.html'
 		}
 
 	}
