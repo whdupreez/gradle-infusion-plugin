@@ -1,8 +1,11 @@
 package com.willydupreez.infusion.tasks;
 
+import java.io.File;
+
 import groovy.lang.Closure;
 
 import org.gradle.api.Project;
+import org.gradle.api.tasks.InputDirectory;
 
 import com.willydupreez.infusion.watch.FilePatternWatcher;
 import com.willydupreez.infusion.watch.TaskExecutor;
@@ -13,10 +16,13 @@ public class InfusionWatchTask extends AbstractInfusionServeTask {
 
 	private FilePatternWatcher watcher;
 
+	@InputDirectory
+	private File siteSrc;
+
 	@Override
 	protected void onInit() {
 		Project project = this.getProject();
-		watcher = new FilePatternWatcher(getSiteDist(), new Closure<Void>(this) {
+		watcher = new FilePatternWatcher(siteSrc, new Closure<Void>(this) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -45,6 +51,14 @@ public class InfusionWatchTask extends AbstractInfusionServeTask {
 
 	public void setTaskToExecute(String taskToExecute) {
 		this.taskToExecute = taskToExecute;
+	}
+
+	public File getSiteSrc() {
+		return siteSrc;
+	}
+
+	public void setSiteSrc(File siteSrc) {
+		this.siteSrc = siteSrc;
 	}
 
 }

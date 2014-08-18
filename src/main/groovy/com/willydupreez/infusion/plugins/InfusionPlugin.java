@@ -74,6 +74,8 @@ public class InfusionPlugin implements Plugin<Project> {
 		watchTask.setHost("0.0.0.0");
 		watchTask.setPort(9000);
 		watchTask.setSiteDist(new File(project.getBuildDir(), "site"));
+		watchTask.setTaskToExecute(SITE_TASK_NAME);
+		watchTask.setSiteSrc(new File(project.getProjectDir(), "src/site"));
 	}
 
 }
